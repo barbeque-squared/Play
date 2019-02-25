@@ -11,6 +11,8 @@ public static class SongMetaManager
     private static int s_songsFound;
     private static int s_songsSuccess;
     private static int s_songsFailed;
+    // needed for Thread circumvention
+    private static List<string> s_songDirectories;
 
     public static void Add(SongMeta songMeta)
     {
@@ -46,6 +48,7 @@ public static class SongMetaManager
 
     public static void ScanFiles()
     {
+        s_songDirectories = (new SongDirectorySetting()).Get();
         Thread thread = new Thread(new ThreadStart(ScanFilesAsThread));
         thread.Start();
     }
@@ -58,7 +61,11 @@ public static class SongMetaManager
             s_songsSuccess = 0;
             s_songsFailed = 0;
             FolderScanner scannerTxt = new FolderScanner("*.txt");
-            List<string> txtFiles = scannerTxt.GetFiles((string)SettingsManager.GetSetting(ESetting.SongDir));
+            List<string> txtFiles = new List<string>();
+            foreach (string folder in s_songDirectories)
+            {
+                txtFiles.AddRange(scannerTxt.GetFiles(folder));
+            }
             s_songsFound = txtFiles.Count;
             txtFiles.ForEach(delegate (string path)
             {
