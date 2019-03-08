@@ -1,6 +1,6 @@
 public class DisplayLanguageSetting : SimpleEnumSetting<ELanguage>
 {
-  protected override ELanguage GetDefaultValue()
+  public override ELanguage GetDefaultValue()
   {
     return ELanguage.English;
   }
