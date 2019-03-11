@@ -1,4 +1,4 @@
-public class DisplayLanguageSetting : SimpleEnumSetting<ELanguage>
+public class ExampleEnumSetting : SimpleEnumSetting<ELanguage>
 {
   public override ELanguage GetDefaultValue()
   {
